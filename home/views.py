@@ -48,4 +48,4 @@ def Register(request):
 login_required(login_url='home:login')
 def Logout(request):
     logout(request)
-    return redirect('home:login')
+    return redirect('home:index')

@@ -2,12 +2,10 @@
 {% block title %}
     Welcome Page
 {% endblock %}
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="css/login-style.css">
-{% endblock %}
-{% block username %}
 
-{% endblock %}
 {% block body %}
     <h1>Welcome to Bingo Buddy :) </h1>
+    <p><a href="{% url 'test:test' %}">Start Test</a></p>
+    <p><a href="{% url 'test:addQuestion' %}">Add Question</a></p>
+    <p><a href="{% url 'test:viewQuestion' %}">View Question</a></p>
  {% endblock %}
