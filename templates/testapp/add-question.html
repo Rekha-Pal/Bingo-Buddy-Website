@@ -1,0 +1,32 @@
+{% extends 'home/base.html' %}
+{% block title %}
+    Add Question
+{% endblock %}
+{% block head %}
+    <style>
+        #messages{
+            color: red;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="jumbotron container row">
+    <div class="col-md-6">
+        {% for message in messages %}
+            <p id="messages">{{ message }}</p>
+        {% endfor %}
+        <h1 align="center">Add Question</h1><br>
+        <div class="card card-body">
+           <form action="" method="POST">
+              {% csrf_token %}
+                {{form.as_p}}
+                <br>
+             <input type="submit" name="Submit">
+             </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+ {% endblock %}

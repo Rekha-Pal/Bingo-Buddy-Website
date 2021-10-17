@@ -1,0 +1,23 @@
+{% extends 'home/base.html' %}
+{% block title %}
+    Test Paper
+{% endblock %}
+{% block body %}
+    <h1>Test Paper :) </h1>
+    <div id="form-div">
+            <form method="post" action ="{% url 'test:result' pk=ques.id%}">
+
+                    {{ ques.question }}
+                    <div class="option">
+                        <input type="radio" name="option" value="A"> {{ ques.A }}
+                        <input type="radio" name="option" value="B"> {{ ques.B }}
+                        <input type="radio" name="option" value="C"> {{ ques.C }}
+                        <input type="radio" name="option" value="D"> {{ ques.D }}
+                    </div>
+
+                <div id="submitbutton">
+                    <input type=submit>
+                </div>
+            </form>
+        </div>
+ {% endblock %}

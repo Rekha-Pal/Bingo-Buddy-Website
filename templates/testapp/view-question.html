@@ -1,0 +1,41 @@
+{% extends 'home/base.html' %}
+{% block title %}
+    Questions
+{% endblock %}
+{% block head %}
+    <style>
+        #q{
+            font-size: medium;
+        }
+        #option{
+            margin-left: 40px;
+        }
+        #question{
+            margin-left: 20px;
+        }
+        #noofques{
+            text-align: right;
+            margin-right: 25px;
+            color: blue;
+            font-size: medium;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1 align="center" style="color: cadetblue">Added Questions </h1>
+    <br>
+    <p id="noofques">Total Questions : {{ total }}</p>
+    <br>
+    {% for ques in questions %}
+        <div id="q">
+        <p id="question"><b>Ques - {{ ques.id }}: &nbsp; {{ ques.question }}</b></p>
+        <p id="option">A. &nbsp; {{ ques.A }}</p>
+        <p id="option">B. &nbsp; {{ ques.B }}</p>
+        <p id="option">C. &nbsp; {{ ques.C }}</p>
+        <p id="option">D. &nbsp; {{ ques.D }}</p>&nbsp;&nbsp;
+        <a href="{% url 'test:deleteQuestion' pk=ques.id %}">Delete</a>
+        <a href="#" >Update</a>
+        <br><br>
+        </div>
+    {% endfor %}
+ {% endblock %}
