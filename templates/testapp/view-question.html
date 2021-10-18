@@ -19,23 +19,38 @@
             color: blue;
             font-size: medium;
         }
+        #messages{
+            color: red;
+            text-align: center;
+        }
     </style>
 {% endblock %}
 {% block body %}
+    {% for message in messages %}
+        <p id="messages">{{ message }}</p>
+    {% endfor %}
     <h1 align="center" style="color: cadetblue">Added Questions </h1>
     <br>
     <p id="noofques">Total Questions : {{ total }}</p>
     <br>
     {% for ques in questions %}
+
         <div id="q">
-        <p id="question"><b>Ques - {{ ques.id }}: &nbsp; {{ ques.question }}</b></p>
+        <p id="question"><b>Ques : {{ ques.question }}</b></p>
         <p id="option">A. &nbsp; {{ ques.A }}</p>
         <p id="option">B. &nbsp; {{ ques.B }}</p>
         <p id="option">C. &nbsp; {{ ques.C }}</p>
-        <p id="option">D. &nbsp; {{ ques.D }}</p>&nbsp;&nbsp;
-        <a href="{% url 'test:deleteQuestion' pk=ques.id %}">Delete</a>
-        <a href="#" >Update</a>
+        <p id="option">D. &nbsp; {{ ques.D }}</p>
+        <form method="post" action ="{% url 'test:deleteQuestion' pk=ques.id%}">    &nbsp;&nbsp;
+            Click Here to Delete this question : <input type="submit" value="Delete">
+        </form>
+        <br/>
+        <form method="post" action ="{% url 'test:updateQuestion' pk=ques.id%}">    &nbsp;&nbsp;
+            Click Here to Edit this question : <input type="submit" value="Edit">
+        </form>
         <br><br>
         </div>
+
     {% endfor %}
+
  {% endblock %}

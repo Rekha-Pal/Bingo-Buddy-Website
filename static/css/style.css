@@ -1,5 +1,6 @@
 body, html {
   height: 100%;
+    width: 100%;
   margin: 0;
 }
 body{
@@ -7,8 +8,7 @@ body{
     background-position: center;
     background-size: cover;
     background-repeat: repeat-y;
-    width: 100vh;
-    height: 100vw;
+
 }
 .footer {
     position: -webkit-sticky;

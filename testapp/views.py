@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from testapp.models import Question
 from testapp.forms import *
@@ -8,8 +8,9 @@ app_name = 'test'
 import random
 
 def testPaper(request):
-    count = Question.objects.all().count()
-    s=random.randint(1,count)
+    first = Question.objects.all().first().id
+    last = Question.objects.all().last().id
+    s=random.randint(first,last)
     question = Question.objects.get(id=s)
     data = {'ques':question}
     return render(request,'testapp/test-paper.html',data)
@@ -26,11 +27,28 @@ def result(request,pk):
             data['msg']="Sorry, your answer is not correct"
     return render(request,'testapp/result.html',data)
 
+@csrf_exempt
 def deleteQuestion(request,pk):
+    obj = get_object_or_404(Question, id=pk)
     if request.method == 'POST':
-        print('hello from view')
-        Question.objects.filter(id=pk).delete()
+        obj.delete()
+        #return redirect('test:viewQuestion')
+    else:
+        messages.info(request,'Failed to delete')
+        #Question.objects.filter(id=pk).delete()
     return redirect('test:viewQuestion')
+
+@csrf_exempt
+def updateQuestion(request,pk):
+    context = {}
+    obj = get_object_or_404(Question,id=pk)
+    form = addQuestionform(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Question updated successfully')
+        return redirect('test:viewQuestion')
+    context['form'] = form
+    return render(request,'testapp/update-question.html',context)
 
 
 def addQuestion(request):
