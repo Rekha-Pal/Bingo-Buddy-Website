@@ -7,13 +7,13 @@
     <div id="form-div">
             <form method="post" action ="{% url 'test:result' pk=ques.id%}">
 
-                    {{ ques.question }}
-                    <div class="option">
-                        <input type="radio" name="option" value="A"> {{ ques.A }}
-                        <input type="radio" name="option" value="B"> {{ ques.B }}
-                        <input type="radio" name="option" value="C"> {{ ques.C }}
-                        <input type="radio" name="option" value="D"> {{ ques.D }}
-                    </div>
+                &nbsp;Ques : {{ ques.question }}
+                <ol class="op" type="A">
+                    <li><input type="radio" name="option" value="A"> {{ ques.A }}</li>
+                    <li><input type="radio" name="option" value="B"> {{ ques.B }}</li>
+                    <li><input type="radio" name="option" value="C"> {{ ques.C }}</li>
+                    <li><input type="radio" name="option" value="D"> {{ ques.D }}</li>
+                </ol>
 
                 <div id="submitbutton">
                     <input type=submit>

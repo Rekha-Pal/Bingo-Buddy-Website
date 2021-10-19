@@ -7,13 +7,29 @@ from django.contrib import messages
 app_name = 'test'
 import random
 
+
+def startTest(request):
+    s = set()
+    count = Question.objects.all().count()
+    while (len(s) < 5):
+        s.add(random.randint(1, count))
+    global qno
+    qno ={}
+    qno['qnos'] = s
+    qno['count'] = len(s)
+    return redirect('test:testPaper')
+
 def testPaper(request):
-    first = Question.objects.all().first().id
-    last = Question.objects.all().last().id
-    s=random.randint(first,last)
-    question = Question.objects.get(id=s)
-    data = {'ques':question}
-    return render(request,'testapp/test-paper.html',data)
+    if(qno['count']>0):
+        q = qno['qnos'].pop()
+        qno['count'] = qno['count']-1
+        question = Question.objects.all()[q]
+        data = {'ques':question}
+        return render(request,'testapp/test-paper.html',data)
+    else:
+        messages.info(request,'Test Ended')
+        return render(request,'testapp/ended.html')
+
 
 @csrf_exempt
 def result(request,pk):
@@ -25,7 +41,9 @@ def result(request,pk):
             data['msg']="Congratulations, Your answer is correct"
         else:
             data['msg']="Sorry, your answer is not correct"
+
     return render(request,'testapp/result.html',data)
+    #return redirect('test:testPaper')
 
 @csrf_exempt
 def deleteQuestion(request,pk):
@@ -67,12 +85,14 @@ def addQuestion(request):
 
 def viewQuestion(request):
     #if request.method == 'POST':
-    questions = Question.objects.all()
-    count = questions.count()
-    data={'questions' : questions,'total':count}
-    return render(request,'testapp/view-question.html',data)
-    #else:
-     #   return redirect('home:home')
+    if request.user.is_staff:
+        questions = Question.objects.all()
+        count = questions.count()
+        data={'questions' : questions,'total':count}
+        return render(request,'testapp/view-question.html',data)
+    else:
+        return redirect('home:home')
+
 
 def testpage(request):
     if request.method == 'POST':

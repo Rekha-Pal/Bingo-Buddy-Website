@@ -11,4 +11,7 @@
 {% block body %}
     <h1>Here is your test result :) </h1>
     {{ msg }}
+    <br/>
+    <hr/>
+    <a href="{% url 'test:testPaper' %}" class="button">&nbsp;Next</a>
  {% endblock %}
