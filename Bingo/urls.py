@@ -19,4 +19,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('home.urls')),
     path('testapp/',include('testapp.urls')),
+    path('bingocard/',include('bingocard.urls')),
 ]

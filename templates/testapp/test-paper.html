@@ -2,8 +2,19 @@
 {% block title %}
     Test Paper
 {% endblock %}
+{% block head %}
+    <style>
+        #messages{
+            color: red;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <h1>Test Paper :) </h1>
+    {% for message in messages %}
+        <p id="messages">{{ message }}</p>
+    {% endfor %}
     <div id="form-div">
             <form method="post" action ="{% url 'test:result' pk=ques.id%}">
 

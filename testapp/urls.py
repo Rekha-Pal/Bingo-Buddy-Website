@@ -10,4 +10,5 @@ urlpatterns =[
     path('viewQuestion/',viewQuestion,name='viewQuestion'),
     re_path('deleteQuestion/(?P<pk>\d+)/',deleteQuestion,name='deleteQuestion'),
     re_path('updateQuestion/(?P<pk>\d+)/',updateQuestion,name='updateQuestion'),
+    path('Bingo/',Bingo,name='bingo'),
 ]

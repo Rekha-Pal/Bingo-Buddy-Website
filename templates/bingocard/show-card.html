@@ -1,0 +1,89 @@
+{% extends 'home/base.html' %}
+{% block title %}
+    Bingo Card
+{% endblock %}
+{% block head %}
+    <style>
+        .card {
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 20px;
+        }
+        table ,td{
+            border: 3px solid green;
+        }
+        table {
+            width:50%;
+            border-collapse: collapse;
+        }
+        td {
+            height: 100px;
+            text-align: center;
+            padding: 15px;
+            background-color: greenyellow;
+            color: red;
+            font-size: xxx-large;
+            text-decoration-style: solid;
+        }
+        td.pink{
+            background-color: lightpink;
+        }
+        #messages{
+            color: red;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>Bingo Card :) </h1>
+    {% for message in messages %}
+        <p id="messages">{{ message }}</p>
+    {% endfor %}
+    <a href="{% url 'test:testPaper' %}" class="button">&nbsp;Next</a>
+    <hr/>
+    <form action="{% url 'test:bingo' %}" method="post">
+        {% csrf_token %}
+        <select name="line">
+                <option value="row">Row</option>
+                <option value="col">Column</option>
+                <option value="diagonal">Diagonal</option>
+        </select>
+        <select name="no">
+            <optgroup label="Row">
+                <option value="1">Row-1</option>
+                <option value="2">Row-2</option>
+                <option value="3">Row-3</option>
+                <option value="4">Row-4</option>
+                <option value="5">Row-5</option>
+            </optgroup>
+            <optgroup label="Column">
+                <option value="1">Column-1</option>
+                <option value="2">Column-2</option>
+                <option value="3">Column-3</option>
+                <option value="4">Column-4</option>
+                <option value="5">Column-5</option>
+            </optgroup>
+            <optgroup label="Diagonal">
+                <option value="1">Diagonal</option>
+                <option value="2">Antidiagonal</option>
+            </optgroup>
+        </select>
+        <input type="submit" value="BINGO">
+    </form>
+
+
+    <table class="card">
+        {% for row in tabledata %}
+            <tr>
+                {% for item in row %}
+                    {% if item in marked %}
+                        <td id="{{ item }}" class="pink">{{ item }}</td>
+                    {% else %}
+                        <td id="{{ item }}">{{ item }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    <hr/>
+ {% endblock %}
