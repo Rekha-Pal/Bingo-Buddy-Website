@@ -6,7 +6,6 @@ from django.contrib import messages
 app_name = 'test'
 import random
 
-#def showCard(request):
 def startTest(request):
     count = Question.objects.all().count()
     l = []
@@ -39,39 +38,32 @@ def startTest(request):
     random.shuffle(row4)
     random.shuffle(row5)
     d['tabledata'] = [row1,row2,row3,row4,row5]
+
+    rows = d['tabledata']
+    cols = []
+    for i in range(5):
+        col = []
+        for row in rows:
+            col.append(row[i] - 1)
+        cols.append(col)
+    d['columns'] = cols
+
+    diag1 = []
+    diag2 = []
+    i = 0
+    for row in rows:
+        diag1.append(row[i])
+        diag2.append(row[4 - i])
+        i = i + 1
+    diags = []
+    diags.append(diag1)
+    diags.append(diag2)
+    d['diagonals'] = diags
+
     global ques
     ques = []
     return redirect('test:testPaper')
 
-
-@csrf_exempt
-def Bingo(request):
-    if request.method == 'POST':
-        line = request.POST['line']
-        rows = d['tabledata']
-        no = request.POST['no']
-        q = []
-        if line == 'row':
-            q = rows[int(no) - 1]
-        elif line == 'col':
-            for row in rows:
-                q.append(row[int(no) - 1])
-        else :
-            if no == '1':
-                i = 0
-                for row in rows:
-                    q.append(row[i])
-                    i = i + 1
-            else:
-                i = 4
-                for row in rows:
-                    q.append(row[i])
-                    i = i - 1
-        for x in q :
-            if x not in d['marked']:
-                messages.info(request,'Sorry, You did not win')
-                return redirect('test:testPaper')
-        return render(request,'bingocard/win.html')
 
 
 def testPaper(request):
@@ -80,8 +72,8 @@ def testPaper(request):
         qid = d['qnos'].pop()
         d['count'] = d['count']-1
         question = Question.objects.get(id=qid)
-        data = {'ques':question}
-        return render(request,'testapp/test-paper.html',data)
+        d['ques'] = question
+        return render(request,'testapp/test-paper.html',d)
     else:
         messages.info(request,'Test Ended')
         return render(request,'testapp/ended.html')
@@ -89,34 +81,53 @@ def testPaper(request):
 
 @csrf_exempt
 def result(request,pk):
-    #data={}
     if request.method=="POST":
         v=request.POST['option']
         q=Question.objects.get(id=pk)
         if v==q.answer:
             ques.append(q.id)
-            #d['msg']="Congratulations, Your answer is correct"
-            messages.info(request,"Congratulations, Your answer is correct")
+            #messages.info(request,"Congratulations, Your answer is correct")
+            d['marked'] = ques
+            return redirect('test:letsBingo')
         else:
             messages.info(request,"Sorry, Your answer is not correct")
-            #d['msg']="Sorry, your answer is not correct"
         d['marked'] = ques
-    return render(request,'bingocard/show-card.html',d)
-    #return redirect('test:testPaper')
+    return redirect('test:testPaper')
 
+def LetsBingo(request):
+    rows = d['tabledata']
+    for row in rows :
+        for r in row :
+            if r not in d['marked'] :
+                break
+        else:
+            return render(request, 'bingocard/show-card.html',d)
 
+    cols = d['columns']
+    for col in cols :
+        for c in col :
+            if c not in d['marked'] :
+                break
+        else:
+            return render(request, 'bingocard/show-card.html', d)
 
+    diags = d['diagonals']
+    for diag in diags :
+        for x in diag :
+            if x not in d['marked'] :
+                break
+        else:
+            return render(request, 'bingocard/show-card.html',d)
 
+    return redirect('test:testPaper')
 
 @csrf_exempt
 def deleteQuestion(request,pk):
     obj = get_object_or_404(Question, id=pk)
     if request.method == 'POST':
         obj.delete()
-        #return redirect('test:viewQuestion')
     else:
         messages.info(request,'Failed to delete')
-        #Question.objects.filter(id=pk).delete()
     return redirect('test:viewQuestion')
 
 @csrf_exempt

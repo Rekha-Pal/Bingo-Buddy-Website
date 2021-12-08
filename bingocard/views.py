@@ -37,6 +37,37 @@ def showCard(request):
     return render(request,'bingocard/show-card.html',data)
 
 
+"""
+@csrf_exempt
+def Bingo(request):
+    if request.method == 'POST':
+        line = request.POST['line']
+        rows = d['tabledata']
+        no = request.POST['no']
+        q = []
+        if line == 'row':
+            q = rows[int(no) - 1]
+        elif line == 'col':
+            for row in rows:
+                q.append(row[int(no) - 1])
+        else :
+            if no == '1':
+                i = 0
+                for row in rows:
+                    q.append(row[i])
+                    i = i + 1
+            else:
+                i = 4
+                for row in rows:
+                    q.append(row[i])
+                    i = i - 1
+        for x in q :
+            if x not in d['marked']:
+                messages.info(request,'Sorry, You did not win')
+                return redirect('test:testPaper')
+        return render(request,'bingocard/win.html')
 
+
+"""
 
 
